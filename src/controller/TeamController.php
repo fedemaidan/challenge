@@ -38,8 +38,9 @@ class TeamController extends BaseController
     {
         if ($params["id"] ) {
             $id = $params["id"];
-            $params2["name"] = "new nombre";
-            TeamFactory::updateTeam($id, $params2);
+            $updates["name"] = $params["name"];
+            $updates["name"] = "new name";
+            TeamFactory::updateTeam($id, $updates);
             echo $this->message(true, "Team updated successfully" );
         }
         else {

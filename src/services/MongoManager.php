@@ -49,6 +49,7 @@ class MongoManager
     public function update($collecionsName, $filter, $updates) {
         $manager = new \MongoDB\Driver\Manager( "mongodb://mongodb" ); 
         $bulk = new \MongoDB\Driver\BulkWrite();
+        var_dump($filter);die;
         $bulk->update($filter, ['$set' => $updates], ['multi' => false, 'upsert' => false]);
         $result = $manager->executeBulkWrite($this->db.'.'.$collecionsName, $bulk);   
     }

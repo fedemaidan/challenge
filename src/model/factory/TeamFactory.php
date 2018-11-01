@@ -46,7 +46,7 @@ class TeamFactory
         for ($i=0; $i < $size; $i++) {
             $maxAssignablePoints = self::maxAssignablePoints($points, ($size - $i - 1));
             $pointsToPlayer = rand(self::minPointsReservedToPlayer, min(100,$maxAssignablePoints));
-            $player = PlayerFactory::createPlayer($starter,$pointsToPlayer);
+            $player = PlayerFactory::createPlayerRandom($starter,$pointsToPlayer);
             if ($player) {
                 $players[] = $player;
                 $points -= ($player->getAgility() +  $player->getSpeed() + $player->getStrength());

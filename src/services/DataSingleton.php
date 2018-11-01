@@ -9,6 +9,7 @@ namespace Services;
 
 use Services\MongoManager;
 use Model\Team;
+use Model\Player;
 use Services\RandomNames;
 
 class DataSingleton
@@ -51,10 +52,73 @@ class DataSingleton
         return MongoManager::Instance()->get(Team::COLLECTION, $filter);
     }
 
+    public function getTeamOfPlayer($id) {
+        $filterStarters =  ["starters.id" => $id ];
+        $filterSubstitutes =  ["substitutes.id" => $id ];
+        $teams1 = MongoManager::Instance()->get(Team::COLLECTION, $filterStarters);
+        $teams2 = MongoManager::Instance()->get(Team::COLLECTION, $filterSubstitutes);
+        $team = array_merge($teams2,$teams1)[0];
+        $playersObj = array_merge($team->substitutes,$team->starters);
+        
+        $players = [];
+        foreach ($team->substitutes as $key => $value) {
+            $players[] = PlayerFactory::matchPlayer($value->id, $value->first_name, $value->last_name, $value->strength, $value->speed, $value->agility, false);
+        }
+
+        foreach ($team->substitutes as $key => $value) {
+            $players[] = PlayerFactory::matchPlayer($value->id, $value->first_name, $value->last_name, $value->strength, $value->speed, $value->agility, true);
+        }
+
+        return new Team($team->name, $players);
+    }
+
+
+    public function getPlayer($id) {
+
+        $filterStarters =  ["starters.id" => $id ];
+        $filterSubstitutes =  ["substitutes.id" => $id ];
+        $teams1 = MongoManager::Instance()->get(Team::COLLECTION, $filterStarters);
+        $teams2 = MongoManager::Instance()->get(Team::COLLECTION, $filterSubstitutes);
+        $team = array_merge($teams2,$teams1)[0];
+        $playersObj = array_merge($team->substitutes,$team->starters);
+        
+
+        foreach ($team->substitutes as $key => $value) {
+            if ($value->id == $id){
+                    $value->isStarter = false;
+                    return $value;
+                }
+        }
+
+        foreach ($team->substitutes as $key => $value) {
+            if ($value->id == $id){
+                    $value->isStarter = true;
+                    return $value;
+                }
+        }
+
+        return null;
+        
+    }
+
+
+    public function renamePlayer($id, $first_name, $last_name) {
+        $player = $this->getPlayer($id);
+        $first_name = $first_name ? $first_name : $player->first_name;
+        $last_name = $last_name ? $last_name : $player->last_name;
+        if ($this->canAddPlayerName($first_name,$last_name)) {
+            $field = $player->isStarter ? "starters" : "substitutes";
+            $filter = [$field.".id" => $id];
+            $update = [$field.".first_name" => $first_name, $field.".last_name" => $last_name];
+            MongoManager::Instance()->update(Team::COLLECTION, $filter,$update);
+        }
+
+    }
     public function updateTeam($id,$params) {
         $filter = ["_id" => new \MongoDB\BSON\ObjectId($id) ];
         $team = MongoManager::Instance()->update(Team::COLLECTION, $filter,$params);
     }
+
 
     public function deleteTeam($id) {
         $filter = ["_id" => new \MongoDB\BSON\ObjectId($id) ];
@@ -103,13 +167,13 @@ class DataSingleton
 		return $str;
 	}
 
-    private function canAddPlayerId($id) {
+    public function canAddPlayerId($id) {
         $countIdStartersLike = count(MongoManager::Instance()->get("team", ["starters.id" => $id]));
         $countIdSubstitutesLike = count(MongoManager::Instance()->get("team", ["substitutes.id" => $id]));
         return $countIdSubstitutesLike + $countIdStartersLike == 0;
     }
 
-    private function canAddPlayerName($first_name, $last_name) {
+    public function canAddPlayerName($first_name, $last_name) {
         $countNameStartersLike = count(MongoManager::Instance()->get("team", ["starters.first_name" => $first_name, "starters.last_name" => $last_name]));
         
         $countNameSubstitutesLike = count(MongoManager::Instance()->get("team", ["substitutes.first_name" => $first_name, "substitutes.last_name" => $last_name]));

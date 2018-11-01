@@ -29,6 +29,13 @@ exec-get-one:
   		-H 'cache-control: no-cache' \
   		-H 'content-type: multipart/form-data;'
 
+exec-rename-player:
+	curl -X PUT \
+  		http://localhost:9000/index.php/player/95Mu3q \
+  		-H 'cache-control: no-cache' \
+  		-H 'content-type: multipart/form-data;'\
+  		-F first_name=carlos
+
 
 exec-put:
 	curl -X PUT \

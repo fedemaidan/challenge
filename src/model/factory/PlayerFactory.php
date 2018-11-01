@@ -1,7 +1,7 @@
 <?php
 
 /**
- * This factory has the responsability to create/update/delete teams
+ * This factory has the responsability to create/update/delete players
  */
 ;
 
@@ -13,7 +13,7 @@ use Services\DataSingleton;
 
 class PlayerFactory
 {
-    public static function createPlayer($starter,$pointsToPlayer) {
+    public static function createPlayerRandom($starter,$pointsToPlayer) {
     	$id = DataSingleton::Instance()->getUniquePlayerId();
         $name = DataSingleton::Instance()->getUniquePlayerName();
         $first_name = $name[0];
@@ -29,6 +29,24 @@ class PlayerFactory
             return null;   
     }
 
+    public static function matchPlayer($id, $first_name, $last_name, $strength, $speed, $agility, $starter) {
+        $player = new Player($id,$speed, $strength, $agility, $first_name, $last_name, $starter);
+        if (DataSingleton::Instance()->canAddPlayer($player))
+            return $player;
+        else
+            throw new \Exception("This player cannot be matched", 1);
+    }
+
+    public static function updatePlayer($id, $updates) {
+
+        $team =  DataSingleton::Instance()->getTeamOfPlayer($id)[0];
+    var_dump($team);
+        // DataSingleton::Instance()->updateTeams($id,$updates);
+    }
+
+    public static function renamePlayer($id, $first_name, $last_name) {
+        DataSingleton::Instance()->renamePlayer($id, $first_name, $last_name);
+    }
 }
 
 ?>
