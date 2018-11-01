@@ -8,6 +8,8 @@
 namespace Services;
 
 use Services\MongoManager;
+use Model\Team;
+use Services\RandomNames;
 
 class DataSingleton
 {
@@ -39,58 +41,56 @@ class DataSingleton
         $this->ids = array();
     }
 
+    public function addTeam($team) {
+        $this->teams[$team->getName()] = $team;
+        MongoManager::Instance()->insert(Team::COLLECTION, $team->toArray());
+    }
+
+    public function getTeams($id) {
+        $filter = $id ? ["_id" => new \MongoDB\BSON\ObjectId($id) ] : [];
+        return MongoManager::Instance()->get(Team::COLLECTION, $filter);
+    }
+
+    public function updateTeam($id,$params) {
+        $filter = ["_id" => new \MongoDB\BSON\ObjectId($id) ];
+        $team = MongoManager::Instance()->update(Team::COLLECTION, $filter,$params);
+    }
+
+    public function deleteTeam($id) {
+        $filter = ["_id" => new \MongoDB\BSON\ObjectId($id) ];
+        $team = MongoManager::Instance()->delete(Team::COLLECTION, $filter);
+    }
+
     public function getUniquePlayerId() {
     	$id =  $this->randomString(6);
-    	if (in_array($id, $this->ids)) {
-    		$this->getUniquePlayerId();
+        $mongoValidateId = $this->canAddPlayerId($id);
+
+    	if (in_array($id, $this->ids) || !$mongoValidateId) {
+    		return $this->getUniquePlayerId();
     	}
     	else {
-    		$ids[$id] = "reserved";
+    		$ids[] = $id;
     	    return $id;
     	}
     }
 
-    public function addPlayer($player) {
-        if ( $this->canAddPlayer($player)) {
-            $this->playersNames[$player->getName()] = $player->getId();    
-            $this->ids[$player->getId()] = $player;
-        } else {
-            return "Error";
+    public function getUniquePlayerName() {
+        $first_name = RandomNames::getFirstName();
+        $last_name = RandomNames::getLastName();
+        $mongoValidateName = $this->canAddPlayerName($first_name, $last_name);
+        $str = $first_name.",".$last_name;
+        
+        if (in_array($str, $this->playersNames) || !$mongoValidateName) {
+            return $this->getUniquePlayerName();
+        }
+        else {
+            $this->playersNames[] = $first_name.",".$last_name;
+            return [$first_name, $last_name];
         }
     }
 
     public function canAddPlayer($player) {
-        return  $this->ids[$player->getId()] == "reserved" && !array_key_exists($player->getName(),$this->playersNames);
-    }
-
-    public function addTeam($team) {
-        $this->teams[$team->getName()] = $team;
-
-        MongoManager::Instance()->insert("team", $team->toArray());
-    }
-
-    public function getTeams($id) {
-        return MongoManager::Instance()->get("team");
-        $teams = [];
-        if ($id)
-            return $teams[$id] = $this->teams[$id];
-        else
-            return $this->teams;
-    }
-
-    public function canRenamePlayer($player, $name) {
-        return  !array_key_exists($name,$this->playersNames);
-    }
-
-    public function renamePlayer($player, $first_name, $last_name) {
-        if ($this->canRenamePlayer($player, $name)) {
-            $player->setName($first_name,$last_name);
-            $this->playersNames[$player->getName()] = $player->getId();    
-            $this->ids[$player->getId()] = $player;  
-        }else {
-            return "Error";
-        }
-        
+        return  $this->canAddPlayerId($player->getId()) && $this->canAddPlayerName($player->getFirstName(), $player->getLastName());
     }
 
     private function randomString($length = 6) {
@@ -102,6 +102,19 @@ class DataSingleton
 		}
 		return $str;
 	}
+
+    private function canAddPlayerId($id) {
+        $countIdStartersLike = count(MongoManager::Instance()->get("team", ["starters.id" => $id]));
+        $countIdSubstitutesLike = count(MongoManager::Instance()->get("team", ["substitutes.id" => $id]));
+        return $countIdSubstitutesLike + $countIdStartersLike == 0;
+    }
+
+    private function canAddPlayerName($first_name, $last_name) {
+        $countNameStartersLike = count(MongoManager::Instance()->get("team", ["starters.first_name" => $first_name, "starters.last_name" => $last_name]));
+        
+        $countNameSubstitutesLike = count(MongoManager::Instance()->get("team", ["substitutes.first_name" => $first_name, "substitutes.last_name" => $last_name]));
+        return $countNameStartersLike + $countNameSubstitutesLike == 0;
+    }
 }
 
 ?>

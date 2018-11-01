@@ -30,6 +30,16 @@ class TeamFactory
         return $team;        
     }
 
+    public static function updateTeam($id, $params)
+    {
+        return DataSingleton::Instance()->updateTeam($id,$params);
+    }
+
+    public static function deleteTeam($id)
+    {
+        return DataSingleton::Instance()->deleteTeam($id);
+    }
+
     private static function createRandomPlayers($size, $starter, $points) {
         $players = [];
 
@@ -37,8 +47,13 @@ class TeamFactory
             $maxAssignablePoints = self::maxAssignablePoints($points, ($size - $i - 1));
             $pointsToPlayer = rand(self::minPointsReservedToPlayer, min(100,$maxAssignablePoints));
             $player = PlayerFactory::createPlayer($starter,$pointsToPlayer);
-    		$players[] = $player;
-            $points -= ($player->getAgility() +  $player->getSpeed() + $player->getStrength());
+            if ($player) {
+                $players[] = $player;
+                $points -= ($player->getAgility() +  $player->getSpeed() + $player->getStrength());
+            }
+            else {
+                $i--;
+            }
     	}    
 
         return $players;

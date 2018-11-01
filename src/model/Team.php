@@ -5,8 +5,11 @@ use Model\Player;
 
 
 class Team {
+
+	const COLLECTION = "team";
 	private $players;
 	private $name;
+
 
 	const MAX_SCORE = 175;
 	const STARTERS = 10;
