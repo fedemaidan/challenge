@@ -29,7 +29,6 @@ else {
 		case "POST":
 			$controllerAction[2] = "create";
 			$finalParams = $_POST;
-			var_dump($_POST);
 			break;
 		case "DELETE":
 			$controllerAction[2] = "delete";

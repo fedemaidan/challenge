@@ -9,3 +9,10 @@ build:
 
 test:
 	docker exec -it bluestart ./phpunit  --bootstrap autoload.inc.php  tests
+
+exec-create:
+	curl -X POST \
+	http://localhost:9000/index.php/team/1 \
+	-H 'cache-control: no-cache' \
+	-H 'content-type: multipart/form-data;' \
+	-F name=newTeam
