@@ -39,19 +39,19 @@ class Team {
 		return $this->players;
 	}
 
-	public function toJson() {
-		$toJson["name"] = $this->getName();
-		$toJson["starters"] = [];
-		$toJson["substitutes"] = [];
+	public function toArray() {
+		$array["name"] = $this->getName();
+		$array["starters"] = [];
+		$array["substitutes"] = [];
 
 		foreach ($this->getPlayers() as $key => $player) {
 			if ($player->isStarter())
-				$toJson["starters"][] = $player->toJson();
+				$array["starters"][] = $player->toArray();
 			else
-				$toJson["substitutes"][] = $player->toJson();
-		}
+				$array["substitutes"][] = $player->toArray();
+		}	
 
-		return json_encode($toJson);
+		return $array;
 	}
 
 	private function validatePlayers(array $players) {

@@ -25,7 +25,9 @@ class TeamFactory
     	$starters       = self::createRandomPlayers(Team::STARTERS,true, $pointsStarters);
     	$substitutes    = self::createRandomPlayers(Team::SUBSTITUTE,false, (Team::MAX_SCORE - $pointsStarters));
     	$players = array_merge($starters, $substitutes);
-        return new Team($name,$players);
+        $team =  new Team($name,$players);
+        DataSingleton::Instance()->addTeam($team);
+        return $team;        
     }
 
     private static function createRandomPlayers($size, $starter, $points) {

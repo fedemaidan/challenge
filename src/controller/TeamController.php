@@ -13,20 +13,25 @@ use Model\Player;
 use Model\Factory\PlayerFactory;
 use Services\DataSingleton;
 use Services\RandomNames;
+use Controller\BaseController;
 
-class TeamController
+class TeamController extends BaseController
 {
     
 	public function createAction($params)
     {
     	$team = TeamFactory::createTeam($params["name"]);
-    	echo $team->toJson();
+    	json_encode($team->toArray());
     }
 
     public function getAction($params)
     {
-    	var_dump($params);
-    	var_dump("get Teams");
+        $id = null;
+        if ($params["id"])
+            $id=$params["id"];
+        
+        $teams = DataSingleton::Instance()->getTeams($id);
+        echo $this->message(true, "" , $teams );
     }
 
     public function editAction($params)

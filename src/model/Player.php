@@ -69,16 +69,19 @@ class Player
 	}
 
 	public function toJson() {
-		$toJson = [];
-		$toJson["id"] = $this->getId();
-		$toJson["first_name"] = $this->getFirstName();
-		$toJson["last_name"] = $this->getLastName();
-		$toJson["speed"] = $this->getSpeed();
-		$toJson["strength"] = $this->getStrength();
-		$toJson["agility"] = $this->getAgility();
-		$toJson["is_starter"] = $this->isStarter();
-		
-		return json_encode($toJson);
+		return json_encode($this->toArray());
+	}
+
+	public function toArray() {
+		$array = [];
+		$array["id"] = $this->getId();
+		$array["first_name"] = $this->getFirstName();
+		$array["last_name"] = $this->getLastName();
+		$array["speed"] = $this->getSpeed();
+		$array["strength"] = $this->getStrength();
+		$array["agility"] = $this->getAgility();
+		$array["is_starter"] = $this->isStarter();
+		return $array;
 	}
 
 
