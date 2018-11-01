@@ -7,6 +7,7 @@
 
 namespace Services;
 
+use Services\MongoManager;
 
 class DataSingleton
 {
@@ -14,6 +15,7 @@ class DataSingleton
     private $characters;
     private $ids;
     private $playersNames = [];
+    private $teams = [];
 
 
     /**
@@ -59,6 +61,21 @@ class DataSingleton
 
     public function canAddPlayer($player) {
         return  $this->ids[$player->getId()] == "reserved" && !array_key_exists($player->getName(),$this->playersNames);
+    }
+
+    public function addTeam($team) {
+        $this->teams[$team->getName()] = $team;
+
+        MongoManager::Instance()->insert("team", $team->toArray());
+    }
+
+    public function getTeams($id) {
+        return MongoManager::Instance()->get("team");
+        $teams = [];
+        if ($id)
+            return $teams[$id] = $this->teams[$id];
+        else
+            return $this->teams;
     }
 
     public function canRenamePlayer($player, $name) {
