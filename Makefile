@@ -12,7 +12,13 @@ test:
 
 exec-create:
 	curl -X POST \
-	http://localhost:9000/index.php/team/1 \
+	http://localhost:9000/index.php/team \
 	-H 'cache-control: no-cache' \
 	-H 'content-type: multipart/form-data;' \
 	-F name=newTeam
+
+exec-get:
+	curl -X GET \
+  		http://localhost:9000/index.php/team/1 \
+  		-H 'cache-control: no-cache' \
+  		-H 'content-type: multipart/form-data;'

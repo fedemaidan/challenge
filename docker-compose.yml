@@ -1,0 +1,20 @@
+version: '2'
+services:
+    bluestart:
+       build: .
+       restart: always
+       depends_on:
+         - mongodb
+       ports:
+         - "9000:80"
+       volumes:
+         - /home/fede/workspace/challenge/src:/var/www/html
+    mongodb:
+        image: mongo
+        container_name: mongo
+        restart: always
+        volumes:
+            - ./data/db/mongo:/data/db
+        ports:
+            - "27020:27017"
+        command: --storageEngine wiredTiger
