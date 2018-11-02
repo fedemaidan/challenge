@@ -39,12 +39,11 @@ class TeamController extends BaseController
         if ($params["id"] ) {
             $id = $params["id"];
             $updates["name"] = $params["name"];
-            $updates["name"] = "new name";
-            TeamFactory::updateTeam($id, $updates);
-            echo $this->message(true, "Team updated successfully" );
+            $team = TeamFactory::updateTeam($id, $updates);
+            echo $this->message(true, "Team updated successfully" ,$team);
         }
         else {
-            echo $this->message(false, "Id is required");
+            echo $this->message(false, "Id is required", null);
         }
     }
 
@@ -55,7 +54,7 @@ class TeamController extends BaseController
             TeamFactory::deleteTeam($id);
         }
         else {
-            echo $this->message(false, "Id is required");
+            echo $this->message(false, "Id is required", null);
         }
     }
 }

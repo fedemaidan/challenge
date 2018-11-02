@@ -25,24 +25,24 @@ exec-get:
 
 exec-get-one:
 	curl -X GET \
-  		http://localhost:9000/index.php/team/5bdb3dec18443400110c42f2 \
+  		http://localhost:9000/index.php/team/5bdc12a718443400180ea934 \
   		-H 'cache-control: no-cache' \
   		-H 'content-type: multipart/form-data;'
 
 exec-rename-player:
-	curl -X PUT \
-  		http://localhost:9000/index.php/player/95Mu3q \
+	curl -X POST \
+  		http://localhost:9000/index.php/player/1hc4Bf \
   		-H 'cache-control: no-cache' \
   		-H 'content-type: multipart/form-data;'\
-  		-F first_name=carlos
+  		-F first_name=Peter
 
 
-exec-put:
-	curl -X PUT \
-		 http://localhost:9000/index.php/team/5bdb3dec18443400110c42f2 \
+exec-rename-team:
+	curl -X POST \
+		 http://localhost:9000/index.php/team/5bdc12a718443400180ea934 \
 		 -H 'cache-control: no-cache' \
 		 -H 'content-type: multipart/form-data;'\
-		 -F name=updatedTeam
+		 -F name=newName
 
 exec-delete:
 	curl -X DELETE \

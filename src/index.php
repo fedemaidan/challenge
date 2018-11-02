@@ -22,13 +22,15 @@ else {
 			$execute = "get";
 			$id = $controllerAction[3] ? $controllerAction[3] : null;
 			break;
-		case "PUT":
+/*		case "PUT":
 			$execute = "edit";
 			$id = $controllerAction[3] ? $controllerAction[3] : null;
 			parse_str(file_get_contents("php://input"),$finalParams);
 			break;
+*/
 		case "POST":
-			$execute = "create";
+			$id = $controllerAction[3] ? $controllerAction[3] : null;
+			$execute = $id ? "edit" : "create";
 			$finalParams = $_POST;
 			break;
 		case "DELETE":

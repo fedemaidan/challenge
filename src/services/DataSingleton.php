@@ -106,17 +106,24 @@ class DataSingleton
         $player = $this->getPlayer($id);
         $first_name = $first_name ? $first_name : $player->first_name;
         $last_name = $last_name ? $last_name : $player->last_name;
+
         if ($this->canAddPlayerName($first_name,$last_name)) {
             $field = $player->isStarter ? "starters" : "substitutes";
             $filter = [$field.".id" => $id];
-            $update = [$field.".first_name" => $first_name, $field.".last_name" => $last_name];
+            $update = [$field.".$.first_name" => $first_name, $field.".$.last_name" => $last_name];
             MongoManager::Instance()->update(Team::COLLECTION, $filter,$update);
+            $player = $this->getPlayer($id);
+            return $player;
         }
-
+        else {
+            throw new \Exception("Can't rename player becouse is other one with the same name", 1);
+        }
     }
+
     public function updateTeam($id,$params) {
         $filter = ["_id" => new \MongoDB\BSON\ObjectId($id) ];
-        $team = MongoManager::Instance()->update(Team::COLLECTION, $filter,$params);
+        MongoManager::Instance()->update(Team::COLLECTION, $filter,$params);
+        return $this->getTeams($id);
     }
 
 

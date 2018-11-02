@@ -37,15 +37,8 @@ class PlayerFactory
             throw new \Exception("This player cannot be matched", 1);
     }
 
-    public static function updatePlayer($id, $updates) {
-
-        $team =  DataSingleton::Instance()->getTeamOfPlayer($id)[0];
-    var_dump($team);
-        // DataSingleton::Instance()->updateTeams($id,$updates);
-    }
-
     public static function renamePlayer($id, $first_name, $last_name) {
-        DataSingleton::Instance()->renamePlayer($id, $first_name, $last_name);
+        return DataSingleton::Instance()->renamePlayer($id, $first_name, $last_name);
     }
 }
 
