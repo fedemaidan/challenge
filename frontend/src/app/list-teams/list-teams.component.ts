@@ -28,6 +28,7 @@ export class ListTeamsComponent implements OnInit {
 
 	createTeam(): void {
 		this.teamService.createTeam(this.newTeam).subscribe(payload => {
+			this.newTeam = null
 			var type = payload["success"] ? 'success': 'error';
         	this.notifier.notify( type , payload["message"] );
 			this.teamService.getTeams().subscribe(payload => {this.teams = payload["data"]});		
