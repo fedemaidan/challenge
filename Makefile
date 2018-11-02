@@ -1,11 +1,8 @@
-run:
-	docker run -p 9000:80 -d --name bluestart -v /home/fede/workspace/challenge/src:/var/www/html bluestart_image 
-
 start:
-	docker start bluestart
+	docker-compose up -d
 
 build:
-	docker build -t bluestart_image .
+	docker-compose build
 
 test:
 	docker exec -it challenge_bluestart_1 ./phpunit  --bootstrap autoload.inc.php  tests
@@ -35,7 +32,6 @@ exec-rename-player:
   		-H 'cache-control: no-cache' \
   		-H 'content-type: multipart/form-data;'\
   		-F first_name=Peter
-
 
 exec-rename-team:
 	curl -X POST \

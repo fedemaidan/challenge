@@ -8,7 +8,7 @@ services:
        ports:
          - "9000:80"
        volumes:
-         - /home/fede/workspace/challenge/src:/var/www/html
+         - ./src:/var/www/html
     mongodb:
         image: mongo
         container_name: mongo
