@@ -1,9 +1,11 @@
-<div>
-	<td><b>ID</b> {{player.id}}</td> 
-	<td><b>First Name</b> <input [(ngModel)]="player.first_name"/> </td> 
-	<td><b>Last Name</b> <input [(ngModel)]="player.last_name"/></td> 
-	<td><b>Speed</b> {{player.speed}}</td> 
-	<td><b>Strength</b> {{player.strength}}</td> 
-	<td><b>Agility</b> {{player.agility}}</td> 
-	<td><button (click)="updatePlayer(player)">Update</button></td>
+<div class="card" style="margin: 3px">
+	 <div class="card-body">
+		<div class="form-group"><b>ID</b> {{player.id}}</div> 
+		<div class="form-group"><b>First Name</b> <input class="form-control"  [(ngModel)]="player.first_name"/> </div> 
+		<div class="form-group"><b>Last Name</b> <input class="form-control" [(ngModel)]="player.last_name"/></div> 
+		<div class="form-group"><b>Speed</b> {{player.speed}}</div> 
+		<div class="form-group"><b>Strength</b> {{player.strength}}</div> 
+		<div class="form-group"><b>Agility</b> {{player.agility}}</div> 
+		<div class="form-group"><button class="btn btn-default"(click)="updatePlayer(player)">Update</button></div>
+	</div>
 </div>

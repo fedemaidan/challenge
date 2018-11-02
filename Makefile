@@ -42,6 +42,6 @@ exec-rename-team:
 
 exec-delete:
 	curl -X DELETE \
-		 http://localhost:9000/index.php/team/5bdb3dec18443400110c42f2 \
+		 http://localhost:9000/index.php/team/5bdb3d121844340012391931 \
 		 -H 'cache-control: no-cache' \
 		 -H 'content-type: multipart/form-data; '

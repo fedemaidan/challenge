@@ -23,7 +23,6 @@ class PlayerController extends BaseController
                 $id = $params["id"];
                 $first_name = $params["first_name"];
                 $last_name = $params["last_name"];
-                
                 $player = PlayerFactory::renamePlayer($id, $first_name, $last_name);
                 echo $this->message(true, "Player renamed successfully", $player);
             }

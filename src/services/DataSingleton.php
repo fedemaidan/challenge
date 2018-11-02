@@ -80,6 +80,7 @@ class DataSingleton
         $teams1 = MongoManager::Instance()->get(Team::COLLECTION, $filterStarters);
         $teams2 = MongoManager::Instance()->get(Team::COLLECTION, $filterSubstitutes);
         $team = array_merge($teams2,$teams1)[0];
+
         $playersObj = array_merge($team->substitutes,$team->starters);
         
 
@@ -90,7 +91,7 @@ class DataSingleton
                 }
         }
 
-        foreach ($team->substitutes as $key => $value) {
+        foreach ($team->starters as $key => $value) {
             if ($value->id == $id){
                     $value->isStarter = true;
                     return $value;
@@ -116,7 +117,7 @@ class DataSingleton
             return $player;
         }
         else {
-            throw new \Exception("Can't rename player becouse is other one with the same name", 1);
+            throw new \Exception("Can't rename player because is other one with the same name", 1);
         }
     }
 

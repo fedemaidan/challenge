@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Team } from '../model/team';
+import { TeamService } from '../team.service';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-team',
@@ -7,18 +9,35 @@ import { Team } from '../model/team';
   styleUrls: ['./team.component.css']
 })
 export class TeamComponent implements OnInit {
+  private readonly notifier: NotifierService;
 	 @Input() team: Team;
-  constructor() { }
+   substitutesHidden: Boolean
+   starterHidden: Boolean
+   
 
-  ngOnInit() {
+  constructor(private teamService: TeamService,  notifierService: NotifierService) { 
+    this.substitutesHidden = true
+    this.starterHidden = true
+    this.notifier = notifierService
   }
 
-  updatePlayer(player):void {
-  	console.log(player)
+  ngOnInit() {}
+
+  toggleSubstitutesHidden() {
+    this.substitutesHidden = !this.substitutesHidden
   }
 
-  updateTeam(team):void {
-  	console.log(team)
+  toggleStarterHidden() {
+    this.starterHidden = !this.starterHidden
   }
+
+  updateName():void {
+  	this.teamService.updateTeam(this.team["_id"]["$oid"], {name: this.team.name}).subscribe(payload => {
+        var type = payload["success"] ? 'success': 'error';
+        this.notifier.notify( type , payload["message"] );
+    });  
+  }
+
+
 
 }

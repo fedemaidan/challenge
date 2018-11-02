@@ -6,6 +6,10 @@ use Controller\TeamController;
 use Controller\PlayerController;
 
 include 'autoload.inc.php';
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+header('Access-Control-Allow-Methods: PUT, POST, GET, DELETE, OPTIONS');
+
 $requestUrl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 $controllerAction = explode('/', $_SERVER['REQUEST_URI']);
 
@@ -22,16 +26,15 @@ else {
 			$execute = "get";
 			$id = $controllerAction[3] ? $controllerAction[3] : null;
 			break;
-/*		case "PUT":
+		case "PUT":
 			$execute = "edit";
 			$id = $controllerAction[3] ? $controllerAction[3] : null;
-			parse_str(file_get_contents("php://input"),$finalParams);
+			$finalParams = json_decode(file_get_contents("php://input"),true);
 			break;
-*/
 		case "POST":
 			$id = $controllerAction[3] ? $controllerAction[3] : null;
 			$execute = $id ? "edit" : "create";
-			$finalParams = $_POST;
+			$finalParams = json_decode(file_get_contents("php://input"),true);
 			break;
 		case "DELETE":
 			$execute = "delete";
@@ -60,3 +63,5 @@ else {
 	
 	$controller->$actionName($finalParams);
 }
+
+?>

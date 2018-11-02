@@ -65,6 +65,7 @@ class TeamController extends BaseController
             if ($params["id"] ) {
                 $id = $params["id"];
                 TeamFactory::deleteTeam($id);
+                echo $this->message(true, "Team deleted", null);
             }
             else {
                 echo $this->message(false, "Id is required", null);

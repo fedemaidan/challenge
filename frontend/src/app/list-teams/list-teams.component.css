@@ -8,7 +8,7 @@
       cursor: pointer;
       position: relative;
       left: 0;
-      background-color: #EEE;
+      background-color: "transparent";
       margin: .5em;
       padding: .3em 0;
       height: 1.6em;
@@ -16,7 +16,7 @@
     }
     .teams li:hover {
       color: #607D8B;
-      background-color: #DDD;
+      background-color: "transparent";
       left: .1em;
     }
     .teams .text {

@@ -51,6 +51,7 @@ class MongoManager
         $bulk = new \MongoDB\Driver\BulkWrite();
         $bulk->update($filter, ['$set' => $updates], ['multi' => false, 'upsert' => false]);
         $result = $manager->executeBulkWrite($this->db.'.'.$collecionsName, $bulk);   
+
     }
 
     public function delete($collecionsName, $filter) {

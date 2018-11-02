@@ -1,16 +1,17 @@
-<h2>Teams</h2>
+<div class="row">
+	<div class="col-lg-3">
+        <h1 class="my-4">Teams</h1>
+          <div class="list-group">
+            <input [(ngModel)]="newTeam"/><button class="btn btn-default" (click)="createTeam()">Create</button>
+            <a href="#" class="list-group-item" *ngFor="let team of teams" (click)="onSelectTeam(team)"> 
+            	<i  (click)="deleteTeam(team);$event.stopPropagation();"class="fa fa-trash" style="color:red;"  aria-hidden="true"></i>
+            	{{team.name}}
+            </a>
+            
+          </div>
+	</div>	
 
-<table>
-	<tr>
-		<td>
-			<ul class="teams">
-			  <li *ngFor="let team of teams" (click)="onSelectTeam(team)">
-			    <span class="badge">{{team.id}}</span> {{team.name}}
-			  </li>
-			</ul>
-		</td>
-		<td>
-			<app-team [team]="selectedTeam"></app-team>
-		</td>
-	<tr>
-</table>
+	<div class="col-md-9">
+		<app-team [team]="selectedTeam"></app-team>
+	</div>
+</div>
