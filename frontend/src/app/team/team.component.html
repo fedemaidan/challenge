@@ -1,3 +1,20 @@
-<p>
-  team works!
-</p>
+<div *ngIf="team">
+
+  <h5>{{team.name}}</h5>
+  <div>
+      <input [(ngModel)]="team.name" />
+      <button (click)="updateTeam(team)">Update</button>
+    
+    <h6>Starters</h6>
+    		<table>
+    			<tr *ngFor="let starter of team.starters">
+			    	<app-player [player]="starter"></app-player>
+			  	</tr>
+			  	<tr *ngFor="let substitute of team.substitutes">
+			    	<app-player [player]="starter"></app-player>
+			  	</tr>
+			</table>
+    <h6>Substitutes</h6>
+  </div>
+</div>
+

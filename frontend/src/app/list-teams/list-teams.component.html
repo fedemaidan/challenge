@@ -1,0 +1,16 @@
+<h2>Teams</h2>
+
+<table>
+	<tr>
+		<td>
+			<ul class="teams">
+			  <li *ngFor="let team of teams" (click)="onSelectTeam(team)">
+			    <span class="badge">{{team.id}}</span> {{team.name}}
+			  </li>
+			</ul>
+		</td>
+		<td>
+			<app-team [team]="selectedTeam"></app-team>
+		</td>
+	<tr>
+</table>
