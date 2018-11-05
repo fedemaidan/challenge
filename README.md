@@ -37,6 +37,9 @@ Endpoints:
 
 2. /index.php/player	[PUT]
 
+Examples [Here](https://github.com/fedemaidan/challenge/blob/master/backend/api.md)
+
+
 ### Frontend
 
 Requiere to install angular-cli
@@ -48,3 +51,4 @@ Start backend and go to frontend folder to exec:
 Open http://localhost:4200
 
 Code all what you want in frontend folder
+
