@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Team } from './model/team';
 import { Player } from './model/player';
-
+import { environment } from './../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -17,7 +17,7 @@ const httpOptions = {
 })
 export class TeamService {
 
-	private teamUrl = 'http://localhost:9000/index.php/'; 
+	private teamUrl = environment.backend_url; 
 	  constructor(
 	    private http: HttpClient) { }
 
