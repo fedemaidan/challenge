@@ -8,6 +8,7 @@
 namespace Model\Factory;
 
 use Model\Player;
+use Model\Team;
 use Services\DataSingleton;
 
 
@@ -39,6 +40,26 @@ class PlayerFactory
 
     public static function renamePlayer($id, $first_name, $last_name) {
         return DataSingleton::Instance()->renamePlayer($id, $first_name, $last_name);
+    }
+
+    public static function updatePointsPlayer($id, $agility, $speed, $strength) {
+            /* Create player to validate points */
+            $player = new Player($id,$speed, $strength, $agility, "", "", true);
+            /* Create team to validate points */
+            $team = DataSingleton::Instance()->getTeamOfPlayer($id);
+            $players = $team->getPlayers();
+            foreach ($players as $key => $p) {
+                if ($p->getId() == $id) {
+                    $p->setSpeed($speed);
+                    $p->setAgility($agility);
+                    $p->setStrength($strength);
+                }
+            }
+
+            $team->setPlayers($players);
+            
+            return DataSingleton::Instance()->updatePointsPlayer($id, $agility, $speed, $strength);    
+        
     }
 }
 

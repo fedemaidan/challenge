@@ -10,7 +10,8 @@ namespace Services;
 use Services\MongoManager;
 use Model\Team;
 use Model\Player;
-use Services\RandomNames;
+use Model\Factory\PlayerFactory;
+use Services\RandomNames;;
 
 class DataSingleton
 {
@@ -44,7 +45,7 @@ class DataSingleton
 
     public function addTeam($team) {
         $this->teams[$team->getName()] = $team;
-        MongoManager::Instance()->insert(Team::COLLECTION, $team->toArray());
+        return MongoManager::Instance()->insert(Team::COLLECTION, $team->toArray());
     }
 
     public function getTeams($id) {
@@ -62,11 +63,11 @@ class DataSingleton
         
         $players = [];
         foreach ($team->substitutes as $key => $value) {
-            $players[] = PlayerFactory::matchPlayer($value->id, $value->first_name, $value->last_name, $value->strength, $value->speed, $value->agility, false);
+            $players[] = new Player($value->id, $value->speed, $value->strength,  $value->agility, $value->first_name, $value->last_name,  false);
         }
 
-        foreach ($team->substitutes as $key => $value) {
-            $players[] = PlayerFactory::matchPlayer($value->id, $value->first_name, $value->last_name, $value->strength, $value->speed, $value->agility, true);
+        foreach ($team->starters as $key => $value) {
+            $players[] = new Player($value->id, $value->speed, $value->strength,  $value->agility, $value->first_name, $value->last_name, true);
         }
 
         return new Team($team->name, $players);
@@ -108,7 +109,7 @@ class DataSingleton
         $first_name = $first_name ? $first_name : $player->first_name;
         $last_name = $last_name ? $last_name : $player->last_name;
 
-        if ($this->canAddPlayerName($first_name,$last_name)) {
+        if ($this->canAddPlayerName($first_name,$last_name,$id )) {
             $field = $player->isStarter ? "starters" : "substitutes";
             $filter = [$field.".id" => $id];
             $update = [$field.".$.first_name" => $first_name, $field.".$.last_name" => $last_name];
@@ -119,6 +120,16 @@ class DataSingleton
         else {
             throw new \Exception("Can't rename player because is other one with the same name", 1);
         }
+    }
+
+    public function updatePointsPlayer($id, $agility, $speed, $strength) {
+        $player = $this->getPlayer($id);
+        $field = $player->isStarter ? "starters" : "substitutes";
+        $update = [$field.".$.agility" => $agility, $field.".$.speed" => $speed, $field.".$.strength" => $strength];
+        $filter = [$field.".id" => $id];
+        MongoManager::Instance()->update(Team::COLLECTION, $filter,$update);
+        $player = $this->getPlayer($id);
+        return $player;
     }
 
     public function updateTeam($id,$params) {
@@ -181,11 +192,29 @@ class DataSingleton
         return $countIdSubstitutesLike + $countIdStartersLike == 0;
     }
 
-    public function canAddPlayerName($first_name, $last_name) {
-        $countNameStartersLike = count(MongoManager::Instance()->get("team", ["starters.first_name" => $first_name, "starters.last_name" => $last_name]));
+    public function canAddPlayerName($first_name, $last_name, $id = "") {
+        $players = [];
+
+        $teamStarters = MongoManager::Instance()->get("team", ["starters.first_name" => $first_name, "starters.last_name" => $last_name]);
         
-        $countNameSubstitutesLike = count(MongoManager::Instance()->get("team", ["substitutes.first_name" => $first_name, "substitutes.last_name" => $last_name]));
-        return $countNameStartersLike + $countNameSubstitutesLike == 0;
+        $teamSubstitutes = MongoManager::Instance()->get("team", ["substitutes.first_name" => $first_name, "substitutes.last_name" => $last_name]);
+        
+        $count = 0;
+
+        foreach ($teamStarters as $key => $team) {
+            $players = array_merge($team->starters,$players);
+        }
+        
+        foreach ($teamSubstitutes as $key => $team) {
+            $players = array_merge($team->substitutes,$players);
+        }
+
+        for ($i=0; $i < count($players); $i++) { 
+            if ($players[$i]->id != $id && $players[$i]->first_name == $first_name && $players[$i]->last_name == $last_name ){
+                            $count++;}
+        }
+        
+        return $count == 0;
     }
 }
 

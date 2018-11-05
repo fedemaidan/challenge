@@ -27,11 +27,11 @@ exec-get-one:
   		-H 'content-type: multipart/form-data;'
 
 exec-rename-player:
-	curl -X POST \
+	curl -X PUT \
   		http://localhost:9000/index.php/player/1hc4Bf \
   		-H 'cache-control: no-cache' \
   		-H 'content-type: multipart/form-data;'\
-  		-F first_name=Peter
+  		-F agility=100
 
 exec-rename-team:
 	curl -X POST \

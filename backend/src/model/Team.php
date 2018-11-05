@@ -57,7 +57,7 @@ class Team {
 		return $array;
 	}
 
-	private function validatePlayers(array $players) {
+	public function validatePlayers(array $players) {
 		$countStarters = 0;
 		$countSubstitute = 0;
 		$totalAttributeScore = 0;

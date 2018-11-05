@@ -21,10 +21,20 @@ class PlayerController extends BaseController
         try {
             if ($params["id"] ) {
                 $id = $params["id"];
-                $first_name = $params["first_name"];
-                $last_name = $params["last_name"];
-                $player = PlayerFactory::renamePlayer($id, $first_name, $last_name);
-                echo $this->message(true, "Player renamed successfully", $player);
+                if ($params["first_name"] || $params["last_name"]) {
+                    $first_name = $params["first_name"];
+                    $last_name = $params["last_name"];
+                    $player = PlayerFactory::renamePlayer($id, $first_name, $last_name);
+                }
+                if ($params["agility"] || $params["speed"] || $params["strength"]) {
+                    $speed = $params["speed"];
+                    $agility = $params["agility"];
+                    $strength = $params["strength"];
+                    $player = PlayerFactory::updatePointsPlayer($id, $agility, $speed, $strength);   
+                }
+
+
+                echo $this->message(true, "Player updated successfully", $player);
             }
             else {
                 echo $this->message(false, "Id is required",null);

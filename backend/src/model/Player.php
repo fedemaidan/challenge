@@ -119,14 +119,12 @@ class Player
 	private function validateTotalAttributeScore($score1, $score2, $score3) {
 		$total = $score1+$score2+$score3;
 		if (($total) > self::MAX_SCORE) {
-			var_dump($this);
 			throw new \Exception("The Total Attribute Score can't be greater than 100. This player have $total", 1);
 		}
 	}
 
 	private function validateScore($score) {
 		if($score <= 1) {
-			var_dump($this);
 			throw new \Exception("It has to be greater than 1", 1);
 		}
 	}
