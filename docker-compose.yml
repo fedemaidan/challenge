@@ -1,14 +1,20 @@
 version: '2'
 services:
-    bluestart:
-       build: .
+    backend:
+       build: "backend/"
        restart: always
        depends_on:
          - mongodb
        ports:
          - "9000:80"
        volumes:
-         - ./src:/var/www/html
+         - ./backend/src:/var/www/html
+    frontend:
+        build: "frontend/"
+        depends_on:
+         - backend
+        ports:
+          - 3000:80
     mongodb:
         image: mongo
         container_name: mongo

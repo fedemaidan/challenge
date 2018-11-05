@@ -5,7 +5,7 @@ build:
 	docker-compose build
 
 test:
-	docker exec -it challenge_bluestart_1 ./phpunit  --bootstrap autoload.inc.php  tests
+	docker exec -it challenge_backend_1 ./phpunit  --bootstrap autoload.inc.php  tests
 
 exec-create:
 	curl -X POST \
