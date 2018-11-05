@@ -2,7 +2,7 @@
 	<div class="col-lg-3">
         <h1 class="my-4">Teams</h1>
           <div class="list-group">
-            <input [(ngModel)]="newTeam"/><button class="btn btn-default" (click)="createTeam()">Create</button>
+            <input [(ngModel)]="newTeam"/><button class="btn btn-primary" (click)="createTeam()">Create</button>
             <a href="#" class="list-group-item" *ngFor="let team of teams" (click)="onSelectTeam(team)"> 
             	<i  (click)="deleteTeam(team);$event.stopPropagation();"class="fa fa-trash" style="color:red;"  aria-hidden="true"></i>
             	{{team.name}}
