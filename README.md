@@ -10,7 +10,8 @@
 1. Configure .env file
 2. Run:
     
-        docker-compose build		
+        docker-compose build
+        docker-compose up -d
 
 Open http://localhost:3000/frontend
 
