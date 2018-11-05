@@ -11,6 +11,8 @@
 1.  Configure .env file
 2.     make build start
 
+Open http://localhost:3000/frontend
+
 ## Tests
     make test
 
