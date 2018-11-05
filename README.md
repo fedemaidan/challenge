@@ -1,4 +1,3 @@
-
 # Challenge
 
 ## Requirements
@@ -10,7 +9,8 @@
 
 1. Configure .env file
 2. Run:
-	docker-compose build		
+    
+        docker-compose build		
 
 Open http://localhost:3000/frontend
 
@@ -31,6 +31,12 @@ It has 3 components:
 
 Code all what you want in backend folder
 
+Endpoints:
+
+1. /index.php/team 		[POST, GET, PUT, DELETE]
+
+2. /index.php/player	[PUT]
+
 ### Frontend
 
 Requiere to install angular-cli
@@ -42,4 +48,3 @@ Start backend and go to frontend folder to exec:
 Open http://localhost:4200
 
 Code all what you want in frontend folder
-

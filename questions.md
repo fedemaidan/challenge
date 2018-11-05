@@ -2,7 +2,7 @@
 more time? If you didn't spend much time on the code challenge then use this as an opportunity
 to explain what you would add.
 
-I spended 20 hours. I would like to define different types of Exception to model's errors.
+I spended 20 hours. I would like to define different types of Exception to model's errors. I'ld like to paging, filtering and ordering GET inputs too.
 
 2. What was the most useful feature that was added to the latest version of a language you used?
 Please include a snippet of code that shows how you've used it.
