@@ -1,6 +1,7 @@
 import { Component, OnInit , Input} from '@angular/core';
 import { TeamService } from '../team.service';
 import { NotifierService } from 'angular-notifier';
+import { Player } from '../model/player';
 
 @Component({
   selector: 'app-player',
@@ -8,7 +9,7 @@ import { NotifierService } from 'angular-notifier';
   styleUrls: ['./player.component.css']
 })
 export class PlayerComponent implements OnInit {
-	@Input() player: Object;
+	@Input() player: Player;
   private readonly notifier: NotifierService;
 
   constructor(private teamService: TeamService,  notifierService: NotifierService) {

@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Team } from './model/team';
+import { Player } from './model/player';
 
 
 const httpOptions = {
@@ -48,8 +49,8 @@ export class TeamService {
 	      );
 	  }
 
-	  updatePlayer(id, updates):  Observable<Object> {
-		return this.http.put<Object>(this.teamUrl+"player/"+id, updates ,httpOptions)
+	  updatePlayer(id, updates):  Observable<Player> {
+		return this.http.put<Player>(this.teamUrl+"player/"+id, updates ,httpOptions)
 	      .pipe(
 	        tap(_ => console.log("player updated"))
 	      );
