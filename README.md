@@ -8,13 +8,14 @@
 
 ## Run
 
-1.  Configure .env file
-2.     make build start
+1. Configure .env file
+2. Run:
+	docker-compose build		
 
 Open http://localhost:3000/frontend
 
 ## Tests
-    make test
+    docker exec -it challenge_backend_1 ./phpunit  --bootstrap autoload.inc.php  tests
 
 ## Develop
 
@@ -26,7 +27,7 @@ It has 3 components:
 
 ### Backend and DB
 
-    make start
+    docker-compose up -d
 
 Code all what you want in backend folder
 

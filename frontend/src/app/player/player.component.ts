@@ -19,7 +19,8 @@ export class PlayerComponent implements OnInit {
   ngOnInit() {}
 
   updatePlayer(player):void {
-    this.teamService.updatePlayer(player.id, {first_name: player.first_name,last_name: player.last_name}).subscribe(payload => {
+    console.log(player);
+    this.teamService.updatePlayer(player.id, {...player} ).subscribe(payload => {
       var type = payload["success"] ? 'success': 'error';
       this.notifier.notify( type , payload["message"] );
 

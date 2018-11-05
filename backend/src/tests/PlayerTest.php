@@ -28,5 +28,4 @@ final class PlayerCreationTests extends TestCase
 
         $player = PlayerFactory::renamePlayer($player->id,$player->id, $player->id);
     }
-
 }
